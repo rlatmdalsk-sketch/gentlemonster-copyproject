@@ -136,37 +136,41 @@ function Home() {
                 <Swiper
                     onSwiper={setSwiperInstance}
                     loop={true}
-                    speed={400}
+                    speed={600} // 너무 느리지 않게 살짝 조정 (기존 800 -> 600)
                     autoplay={false}
                     navigation={true}
-                    threshold={10}
-                    touchRatio={1.5}
-                    resistance={false}
+                    threshold={5} // 반응 시작 지점을 낮춰 더 민감하게 반응하게 함
+
+                    // 1. 땡기는 힘을 약하게 (손가락 움직임에 슬라이드가 더 많이 따라오게)
+                    touchRatio={1.2} // 1보다 높이면 적은 힘(움직임)으로도 휙휙 따라옵니다.
+
+                    // 2. 적게 밀어도 다음으로 넘어가게 설정
+                    longSwipesRatio={0.2} // 기존 0.5(50%)에서 0.2(20%)로 변경. 조금만 밀어도 착! 넘어갑니다.
+
                     followFinger={true}
-                    shortSwipes={true}
-                    longSwipes={true}
-                    longSwipesRatio={0.2}
-                    touchMoveStopPropagation={true}
+                    shortSwipes={true} // 가벼운 터치에도 반응하도록 다시 활성화
+
+                    resistance={true}
+                    resistanceRatio={0.85} // 끝부분 저항을 줄여서 더 부드럽게
+
+                    touchAngle={45}
                     modules={[Pagination, Navigation]}
                     onSlideChangeTransitionEnd={updateMediaControl}
-                    className={twMerge("w-full h-full relative cursor-e-resize", [
-                        "[&_.swiper-button-next]:after:!content-none",
-                        "[&_.swiper-button-prev]:after:!content-none",
-                        "[&_.swiper-button-next]:!opacity-0",
-                        "[&_.swiper-button-prev]:!opacity-0",
-                        "[&_.swiper-button-next]:!w-1/4",
-                        "[&_.swiper-button-next]:!h-full",
-                        "[&_.swiper-button-next]:!right-0",
-                        "[&_.swiper-button-next]:!top-0",
-                        "[&_.swiper-button-next]:!m-0",
-                        "[&_.swiper-button-next]:!cursor-e-resize",
-                        "[&_.swiper-button-prev]:!w-1/4",
-                        "[&_.swiper-button-prev]:!h-full",
-                        "[&_.swiper-button-prev]:!left-0",
-                        "[&_.swiper-button-prev]:!top-0",
-                        "[&_.swiper-button-prev]:!m-0",
-                        "[&_.swiper-button-prev]:!cursor-e-resize",
-                    ])}
+
+                    // 3. 다른 요소(텍스트, 이미지)가 드래그되어 따라오는 현상 방지
+                    className={twMerge(
+                        "w-full h-full relative cursor-grab active:cursor-grabbing select-none",
+                        [
+                            "[&_img]:pointer-events-none", // 이미지 드래그 방지 (중요!)
+                            "[&_button]:select-none",      // 버튼 텍스트 선택 방지
+                            "[&_.swiper-button-next]:after:!content-none",
+                            "[&_.swiper-button-prev]:after:!content-none",
+                            "[&_.swiper-button-next]:!opacity-0",
+                            "[&_.swiper-button-prev]:!opacity-0",
+                            // 버튼 영역을 최소화하여 드래그 간섭 차단
+                            "[&_.swiper-button-next]:!w-[40px] [&_.swiper-button-prev]:!w-[40px]"
+                        ]
+                    )}
                 >
                     {SLIDES.map((slide) => (
                         <SwiperSlide key={slide.id}>
