@@ -12,9 +12,7 @@ const ProductListPage = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const categoryKey = category === "sunglass" ? "sunglasses" :
-        category === "glass" ? "glasses" : category;
-    const categoryGroup = categoryKey ? CATEGORY_DATA[categoryKey] : null;
+    const categoryGroup = category ? CATEGORY_DATA[category as keyof typeof CATEGORY_DATA] : null;
     const currentCategory = categoryGroup && id ? categoryGroup[id.replace(/^\//, "")] : null;
 
     useEffect(() => {
