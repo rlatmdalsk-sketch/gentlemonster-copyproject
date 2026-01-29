@@ -1,10 +1,22 @@
-// 1. 공통으로 사용할 기초 타입들
 export interface Category {
     id: number;
     name: string;
     path: string;
-    createdAt: string;
-    updatedAt: string;
+    parentId: number | null;
+    children?: Category[];
+    createdAt?: string;
+    updatedAt?: string;
+}
+
+export interface Breadcrumb {
+    id: number;
+    name: string;
+    path: string;
+}
+
+export interface CategoryDetailResponse {
+    category: Category;
+    breadcrumbs: Breadcrumb[];
 }
 
 export interface ProductImage {

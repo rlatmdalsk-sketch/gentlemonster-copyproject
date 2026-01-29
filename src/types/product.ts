@@ -4,7 +4,7 @@ export interface ProductImage {
     productId: number;
 }
 
-export interface Category {
+export interface SimpleCategory {
     id: number;
     name: string;
     path: string;
@@ -24,9 +24,22 @@ export interface Product {
     createdAt: string;
     updatedAt: string;
     images: ProductImage[];
-    category: Category;
+    category: SimpleCategory;
 }
 
-export interface ProductResponse {
-    data: Product;
+export interface ProductListParams {
+    page: number;
+    limit: number;
+    category?: string;
+    sort?: "latest" | "lowPrice" | "highPrice";
+}
+
+export interface ProductListResponse {
+    data: Product[];
+    pagination: {
+        total: number;
+        totalPages: number;
+        page: number;
+        limit: number;
+    };
 }

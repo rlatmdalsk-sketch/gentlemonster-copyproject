@@ -1,11 +1,14 @@
-import { httpClient as api } from "./axios";
+import { httpClient } from "./axios.ts";
+import type { Product, ProductListParams, ProductListResponse } from "../types/product.ts";
 
-// 새로운 상품 등록
-export const createProduct = async (productData: FormData) => {
-    const response = await api.post(`/products/{id}`, productData, {
-        headers: {
-            "Content-Type": "multipart/form-data",
-        },
+export const fetchProducts = async (params: ProductListParams) => {
+    const response = await httpClient.get<ProductListResponse>("/products", {
+        params,
     });
+    return response.data;
+};
+
+export const fetchProductDetail = async (id: number) => {
+    const response = await httpClient.get<{ product: Product }>(`/products/${id}`);
     return response.data;
 };

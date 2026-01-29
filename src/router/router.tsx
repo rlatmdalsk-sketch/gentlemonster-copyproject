@@ -1,4 +1,4 @@
-import { createBrowserRouter, redirect} from "react-router";
+import { createBrowserRouter, redirect } from "react-router";
 import Layout from "../layouts/layout.tsx";
 import Home from "../pages/Home.tsx";
 import Register from "../pages/auth/register.tsx";
@@ -7,12 +7,15 @@ import MyAccount from "../pages/auth/myaccount.tsx";
 import ProfileEdit from "../pages/auth/profileEdit.tsx";
 import ProductListPage from "../pages/Category/ProductListPage.tsx";
 import Dashboard from "../pages/Admin/Dashboard.tsx";
-import ProductEdit from "../pages/Admin/ProductEdit.tsx";
 import useAuthStore from "../stores/useAuthStore.ts";
 import AdminLayout from "../layouts/AdminLayout.tsx";
 import AdminUserList from "../pages/Admin/users/AdminUserList.tsx";
 import AdminUserCreate from "../pages/Admin/users/AdminUserCreate.tsx";
 import AdminUserEdit from "../pages/Admin/users/AdminUserEdit.tsx";
+import AdminCategoryList from "../pages/Admin/categories/AdminCategoryList.tsx";
+import AdminProductCreate from "../pages/Admin/product/AdminProductCreate.tsx";
+import AdminProductList from "../pages/Admin/product/AdminProductList.tsx";
+import AdminProductEdit from "../pages/Admin/product/AdminProductEdit.tsx";
 
 export const adminOnlyLoader = () => {
     const { isLoggedIn, user } = useAuthStore.getState();
@@ -42,7 +45,7 @@ const router = createBrowserRouter([
             /*카테고리*/
             { path: "category/:category/:id", element: <ProductListPage /> },
             { path: "stories", element: <Stories /> },
-        ]
+        ],
     },
     /* 관리용 */
     {
@@ -50,15 +53,26 @@ const router = createBrowserRouter([
         loader: adminOnlyLoader,
         element: <AdminLayout />,
         children: [
-            { index: true, element: <Dashboard /> }, 
-            { path: "user", children: [
-                    { index: true, element: <AdminUserList />},
-                    { path: "create", element: <AdminUserCreate />},
-                    { path: ":id", element: <AdminUserEdit />}
-                ]  },
-            { path: "ProductEdit", element: <ProductEdit />}
-        ]
-    }
+            { index: true, element: <Dashboard /> },
+            {
+                path: "user",
+                children: [
+                    { index: true, element: <AdminUserList /> },
+                    { path: "create", element: <AdminUserCreate /> },
+                    { path: ":id", element: <AdminUserEdit /> },
+                ],
+            },
+            { path: "category", children: [{ index: true, element: <AdminCategoryList /> }] },
+            {
+                path: "product",
+                children: [
+                    { index: true, element: <AdminProductList /> },
+                    { path: "create", element: <AdminProductCreate /> },
+                    { path: "edit/:id", element: <AdminProductEdit /> },
+                ],
+            },
+        ],
+    },
 ]);
 
 export default router;
