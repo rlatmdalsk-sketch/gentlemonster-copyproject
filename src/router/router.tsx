@@ -1,4 +1,4 @@
-import { createBrowserRouter, redirect } from "react-router";
+import { createBrowserRouter, redirect } from "react-router"; // react-router 7/v6.4+ 기준
 import Layout from "../layouts/layout.tsx";
 import Home from "../pages/Home.tsx";
 import Register from "../pages/auth/register.tsx";
@@ -16,18 +16,18 @@ import AdminCategoryList from "../pages/Admin/categories/AdminCategoryList.tsx";
 import AdminProductCreate from "../pages/Admin/product/AdminProductCreate.tsx";
 import AdminProductList from "../pages/Admin/product/AdminProductList.tsx";
 import AdminProductEdit from "../pages/Admin/product/AdminProductEdit.tsx";
+import ProductDetail from "../pages/Category/ProducDetail.tsx"; //
 
 export const adminOnlyLoader = () => {
     const { isLoggedIn, user } = useAuthStore.getState();
     if (!isLoggedIn) {
         alert("관리자 로그인이 필요합니다.");
+        return redirect("/"); // 비로그인 시 리다이렉트 추가
     }
-
     if (user?.role !== "ADMIN") {
         alert("접근 권한이 없습니다.");
         return redirect("/");
     }
-
     return null;
 };
 
@@ -37,16 +37,15 @@ const router = createBrowserRouter([
         element: <Layout />,
         children: [
             { index: true, element: <Home /> },
-            /*계정*/
             { path: "register", element: <Register /> },
             { path: "myaccount", element: <MyAccount /> },
             { path: "myaccount/ProfileEdit", element: <ProfileEdit /> },
-            /*카테고리*/
             { path: "category/:category/:id", element: <ProductListPage /> },
-            { path: "/stories", element: <Stories /> },
+            { path: "stories", element: <Stories /> },
+            /* 🌟 핵심 수정: ProductDetail을 일반 Layout 자식으로 이동 */
+            { path: "product/:id", element: <ProductDetail /> },
         ],
     },
-    /* 관리용 */
     {
         path: "/admin",
         loader: adminOnlyLoader,
