@@ -131,8 +131,8 @@ function Home() {
     }, [swiperInstance]);
 
     return (
-        <div className={twMerge("bg-[#f2f3f5]")}>
-            <section className={twMerge("w-full", "h-[770px] relative overflow-hidden bg-black")}>
+        <div className={twMerge()}>
+            <section className={twMerge("w-full", "h-[860px]", "relative", "overflow-hidden")}>
                 <Swiper
                     onSwiper={setSwiperInstance}
                     loop={true}
@@ -234,10 +234,10 @@ function Home() {
             {/*신제품 슬라이드*/}
             <div>
                 <div className={twMerge("pt-[55px]", "px-[50px]", "w-full", "pb-10")}>
-                    <p className={twMerge("text-[#111]", "text-[17px]", "font-[550]")}>새롭게 선보이는 젠틀몬스터 신제품</p>
+                    <p className={twMerge("text-[#111]", "text-[19px]", "font-[550]")}>새롭게 선보이는 젠틀몬스터 신제품</p>
                     <Link
                         to="/category/sunglasses/view-all"
-                        className={twMerge("text-[12px]", "underline", "decoration-1")}
+                        className={twMerge("text-[15px]", "underline", "decoration-1")}
                     >
                         더보기
                     </Link>
@@ -252,16 +252,16 @@ function Home() {
             {/*TOP 베스트셀러 슬라이드*/}
             <div>
                 <div className={twMerge("pt-[55px]", "px-[50px]", "w-full", "pb-10")}>
-                    <p className={twMerge("text-[#111]", "text-[17px]", "font-[550]")}>TOP 10 베스트셀러</p>
+                    <p className={twMerge("text-[#111]", "text-[19px]", "font-[550]")}>TOP 10 베스트셀러</p>
                     <Link
-                        to="/category/sunglasses/bestsellers"
-                        className={twMerge("text-[12px]", "underline", "decoration-1")}
+                        to="/category/collections/bestseller"
+                        className={twMerge("text-[15px]", "underline", "decoration-1")}
                     >
                         더보기
                     </Link>
                 </div>
-                <div>
-                    <BestSellerSlider/>
+                <div >
+                    <BestSellerSlider />
                 </div>
             </div>
         </div>
