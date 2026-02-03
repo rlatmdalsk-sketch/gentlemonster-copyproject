@@ -1,96 +1,139 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Thumbs, Controller } from "swiper/modules";
+import { Link } from "react-router-dom";
 import 'swiper/css';
 import 'swiper/css/thumbs';
 import 'swiper/css/free-mode';
-import { twMerge } from "tailwind-merge";
-
-const LookSLIDES = Array.from({ length: 31 }, (_, i) => ({
-    id: i + 1,
-    src: `/images/Home/Slide1/LOOK_BOOK_FIRST (${i + 1}).jpg`,
-    title: `알마 01(V)`,
-    price: `₩279,000`,
-}));
+import { fetchProducts } from "../../api/product.api.ts";
+import { getCategories } from "../../api/category.api.ts";
+import type { Product } from "../../types/product.ts";
 
 function LookBookSlider() {
+    const [products, setProducts] = useState<Product[]>([]);
+    const [loading, setLoading] = useState(true);
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
+
+    useEffect(() => {
+        const loadData = async () => {
+            try {
+                setLoading(true);
+                const categories = await getCategories();
+                const rawData = Array.isArray(categories) ? categories : (categories as any).data;
+
+                const findCategoryByPath = (list: any[]): any => {
+                    for (const cat of list) {
+                        if (cat.path === "c-2026-collection" || cat.path === "/c-2026-collection") {
+                            return cat;
+                        }
+                        if (cat.children) {
+                            const found = findCategoryByPath(cat.children);
+                            if (found) return found;
+                        }
+                    }
+                    return null;
+                };
+
+                const targetCategory = findCategoryByPath(rawData);
+
+                if (targetCategory) {
+                    const productsResponse = await fetchProducts({ page: 1, limit: 100 });
+                    const allProducts = Array.isArray(productsResponse)
+                        ? productsResponse
+                        : (productsResponse.data || []);
+
+                    const filtered = allProducts.filter((p: Product) =>
+                        String(p.categoryId) === String(targetCategory.id)
+                    );
+                    setProducts(filtered);
+                }
+            } catch (error) {
+                console.error("컬렉션 데이터 로드 실패", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        loadData();
+    }, []);
+
+    if (loading) return <div className="text-center py-20 text-[10px] tracking-widest">LOADING...</div>;
 
     return (
         <div className="w-full">
-            {/* 1. 전체 섹션: 하단 아이템 뷰까지 포함하므로 넉넉하게 높이 설정 또는 최소 높이 지정 */}
             <section className="w-full flex flex-col items-center">
 
-                {/* 2. 메인 슬라이더: 이미지 컨테이너인 700px에 맞춤 */}
+                {/* 1. 메인 슬라이더: 사진 크기 체감 확대 */}
                 <Swiper
                     modules={[FreeMode, Thumbs, Controller]}
                     thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
-                    slidesPerView={"2.8"}
+                    slidesPerView={2.5}
                     centeredSlides={false}
-                    spaceBetween={10}
+                    spaceBetween={0}
                     grabCursor={true}
                     speed={800}
-                    touchRatio={1.2}
-                    className="w-full h-[700px]" // 슬라이더 자체 높이를 이미지 박스와 일치시킴
+                    className="w-full h-[700px]"
                 >
-                    {LookSLIDES.map((slide) => (
+                    {products.map((slide) => (
                         <SwiperSlide key={slide.id}>
-                            <div className="w-full h-full">
-                                {/* 3. 이미지 박스: 정확히 700px 공간 차지 */}
-                                <div className="w-[85%] h-[700px] overflow-hidden relative ml-auto">
+                            <div className="relative w-full h-full group">
+                                <Link to={`/product/${slide.id}`} className="w-full h-full block overflow-hidden">
                                     <img
-                                        src={slide.src}
-                                        alt={slide.title}
-                                        /* 4. 이미지 크기: 700px의 160% 높이 적용 */
-                                        className="absolute w-full h-[160%] object-cover"
-                                        style={{
-                                            top: '0',
-                                            transform: 'translateY(-150px) translateX(10px)'
-                                        }}
+                                        src={slide.images?.[0]?.url || slide.image}
+                                        alt={slide.name}
+                                        /* 🌟 scale을 살짝 주어 박스 안을 더 꽉 채우도록 수정 */
+                                        className="w-full h-full object-contain scale-170"
                                     />
+                                </Link>
+
+                                <div className="absolute bottom-10 left-10 pointer-events-none">
+                                    <div className="flex flex-col gap-0.5 text-black">
+                                        <p className="text-[13px] font-bold uppercase tracking-tighter">{slide.name}</p>
+                                        <p className="text-[12px] tracking-tighter">₩{slide.price?.toLocaleString()}</p>
+                                    </div>
                                 </div>
                             </div>
                         </SwiperSlide>
                     ))}
                 </Swiper>
 
-                {/* 5. 하단 아이템 뷰 영역 */}
-                <div className="flex items-center justify-center mt-5 w-full">
-                    <div className="flex items-center gap-4border-black/10 pb-2">
+                {/* 2. 하단 아이템 뷰: 박스 내 사진 크기 키우기 */}
+                <div className="flex flex-col items-center justify-center mt-12 mb-20 w-full">
+                    <div className="flex items-center pb-2">
                         <Swiper
                             onSwiper={setThumbsSwiper}
                             modules={[FreeMode, Thumbs, Controller]}
-                            slidesPerView={"7"}
-                            spaceBetween={8}
+                            slidesPerView={4}
+                            spaceBetween={5} // 간격을 살짝 벌려 가독성 확보
                             watchSlidesProgress={true}
                             slideToClickedSlide={true}
                             freeMode={true}
-                            className="max-w-[500px]"
+                            /* 🌟 4칸이 보일 수 있도록 너비 확장 (100px * 4 + 여백) */
+                            className="w-[400px]"
                         >
-                            {LookSLIDES.map((slide) => (
+                            {products.map((slide) => (
                                 <SwiperSlide
-                                    key={slide.id}
-                                    style={{ width: '60px' }}
-                                    className="cursor-pointer  swiper-slide-thumb-active:opacity-100"
+                                    key={`thumb-${slide.id}`}
+                                    className="cursor-pointer"
                                 >
-                                    <div className="w-[60px] h-[80px] overflow-hidden">
-                                        <img src={slide.src} className="w-full h-[130%] object-cover" />
+                                    {/* 🌟 박스 크기를 100x100으로 유지하되 scale로 사진 강조 */}
+                                    <div className="w-[100px] h-[100px] flex items-center justify-center overflow-hidden">
+                                        <img
+                                            src={slide.images?.[0]?.url || slide.image}
+                                            className="w-full h-full object-contain scale-125"
+                                        />
                                     </div>
                                 </SwiperSlide>
                             ))}
                         </Swiper>
-                        <span className="text-[13px] font-bold whitespace-nowrap ml-2 pt-2">아이템 뷰</span>
                     </div>
                 </div>
 
                 <style>{`
-                    .swiper-slide-thumb-active {
-                        position: relative;
-                    }
+                    .swiper-slide-thumb-active { position: relative; }
                     .swiper-slide-thumb-active::after {
                         content: '';
                         position: absolute;
-                        bottom: -10px;
+                        bottom: -5px;
                         left: 0;
                         width: 100%;
                         height: 2px;

@@ -233,7 +233,7 @@ function Home() {
             </section>
             {/*신제품 슬라이드*/}
             <div>
-                <div className={twMerge("pt-[55px]", "px-[50px]", "w-full", "pb-10")}>
+                <div className={twMerge("pt-[55px]", "px-[50px]", "w-full")}>
                     <p className={twMerge("text-[#111]", "text-[19px]", "font-[550]")}>새롭게 선보이는 젠틀몬스터 신제품</p>
                     <Link
                         to="/category/sunglasses/view-all"
@@ -244,7 +244,7 @@ function Home() {
                 </div>
 
                 {/* 슬라이더 영역: 텍스트 바로 아래 붙도록 설정 */}
-                <div className="mt-20">
+                <div >
                     <LookBookSlider />
                 </div>
             </div>
