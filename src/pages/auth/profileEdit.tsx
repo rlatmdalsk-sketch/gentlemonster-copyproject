@@ -36,7 +36,7 @@ function ProfileEdit() {
     };
 
     return (
-        <div className="flex flex-col items-center min-h-screen py-20 px-4">
+        <div className="flex flex-col items-center min-h-screen pt-20 px-4">
             <h2 className="text-2xl font-bold mb-10">프로필 편집</h2>
 
             <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md flex flex-col gap-6">

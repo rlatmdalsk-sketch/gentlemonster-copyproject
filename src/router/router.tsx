@@ -17,7 +17,9 @@ import AdminProductCreate from "../pages/Admin/product/AdminProductCreate.tsx";
 import AdminProductList from "../pages/Admin/product/AdminProductList.tsx";
 import AdminProductEdit from "../pages/Admin/product/AdminProductEdit.tsx";
 import ProductDetail from "../pages/Category/ProducDetail.tsx";
-import ShoppingBag from "../pages/Cart/shoppingBag.tsx"; //
+import ShoppingBag from "../pages/Cart/shoppingBag.tsx";
+import ProfileLayout from "../layouts/ProfileLayout.tsx";
+import OrderList from "../pages/auth/orderList.tsx"; //
 
 export const adminOnlyLoader = () => {
     const { isLoggedIn, user } = useAuthStore.getState();
@@ -39,8 +41,15 @@ const router = createBrowserRouter([
         children: [
             { index: true, element: <Home /> },
             { path: "register", element: <Register /> },
-            { path: "myaccount", element: <MyAccount /> },
-            { path: "myaccount/ProfileEdit", element: <ProfileEdit /> },
+            {
+                path: "myaccount",
+                element: <ProfileLayout />, // 여기에 ProfileHeader가 포함되어 있음
+                children: [
+                    { index: true, element: <MyAccount /> },
+                    { path: "profileEdit", element: <ProfileEdit /> },
+                    { path: "orderList", element: <OrderList /> },
+                ],
+            },
 
             { path: "category/:category", element: <ProductListPage /> },
             { path: "category/:category/:id", element: <ProductListPage /> },
@@ -51,6 +60,8 @@ const router = createBrowserRouter([
             { path: "shoppingBag", element: <ShoppingBag />},
         ],
     },
+
+
     {
         path: "/admin",
         loader: adminOnlyLoader,

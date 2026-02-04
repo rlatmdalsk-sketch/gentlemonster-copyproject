@@ -1,7 +1,6 @@
 import {Link, useNavigate} from "react-router-dom";
 import useAuthStore from "../../stores/useAuthStore.ts";
 import {twMerge} from "tailwind-merge";
-import ProfileEdit from "./profileEdit.tsx";
 
 function MyAccount() {
     const navigate = useNavigate();
@@ -17,21 +16,7 @@ function MyAccount() {
 
     return (
         <>
-            <div className={twMerge("ml-[60px]", "mt-5", "flex", "gap-2", "justify-between")}>
-                <button
-                    className={twMerge(
-                        "border text-[12px] px-[11px] py-[7px] text-[#858585] bg-none rounded-[20px] border-[#dfe3e8] hover:bg-[#DFE3E8] hover:text-[#111] transition-colors"
-                    )}
-                >
-                    계정
-                </button>
-                <button
-                    onClick={handleLogout}
-                    className={twMerge("text-[13px]", "px-[11px]", "py-[7px]", "font-semibold", "mr-[60px]")}
-                >
-                    로그아웃
-                </button>
-            </div>
+           
 
             <div
                 className={twMerge("flex", "flex-col", "items-start", "max-h-full", "mt-10", "gap-4", "max-w-[680px]", "m-auto")}>
