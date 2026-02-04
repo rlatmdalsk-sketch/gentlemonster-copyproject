@@ -19,6 +19,13 @@ export default function Header({ onLoginClick }: { onLoginClick: () => void }) {
     // 🌟 수정: API 데이터를 그대로 쓰되, 없으면 빈 배열
     const displayMenu = categories.length > 0 ? categories : [];
 
+    const handleCartClick = (e: React.MouseEvent) => {
+        if (!isLoggedIn) {
+            e.preventDefault();
+            onLoginClick();
+        }
+    };
+
     useEffect(() => {
         const fetchCategories = async () => {
             try {
@@ -93,7 +100,6 @@ export default function Header({ onLoginClick }: { onLoginClick: () => void }) {
                 <div className="grid grid-cols-3 items-center h-[90px] px-[60px]">
                     <nav className="flex gap-5 h-full items-center">
                         {displayMenu.map(menu => {
-                            // 1. 최상위 메뉴 클릭 시 이동할 경로 계산
                             const parentPath = menu.path.replace(/^\//, "");
                             const firstChildPath = menu.children && menu.children.length > 0
                                 ? `/category/${parentPath}/${menu.children[0].path.replace(/^\//, "")}`
@@ -130,18 +136,12 @@ export default function Header({ onLoginClick }: { onLoginClick: () => void }) {
 
                     <div className="flex gap-3 justify-end items-center">
                         <div className="flex items-center">
-                            <Link to="/slide" className="text-[13px] font-bold">
-                                슬라이드
-                            </Link>
-                            <span className="text-[10px] opacity-30 mx-2">|</span>
                             <Link to="/search" className="p-1">
                                 <IoIosSearch size={24} />
                             </Link>
                         </div>
                         {isLoggedIn ? (
-                            <Link
-                                to="/myaccount"
-                                className="p-1 hover:opacity-50 transition-opacity">
+                            <Link to="/myaccount" className="p-1 hover:opacity-50 transition-opacity">
                                 <LuUser size={24} />
                             </Link>
                         ) : (
@@ -154,7 +154,12 @@ export default function Header({ onLoginClick }: { onLoginClick: () => void }) {
                                 <LuUser size={24} />
                             </button>
                         )}
-                        <Link to="/cart" className="p-1">
+
+                        <Link
+                            to="/shoppingBag"
+                            onClick={handleCartClick} // 클릭 핸들러 연결
+                            className="p-1 hover:opacity-50 transition-opacity"
+                        >
                             <RiShoppingBagLine size={24} />
                         </Link>
                     </div>

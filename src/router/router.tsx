@@ -16,7 +16,8 @@ import AdminCategoryList from "../pages/Admin/categories/AdminCategoryList.tsx";
 import AdminProductCreate from "../pages/Admin/product/AdminProductCreate.tsx";
 import AdminProductList from "../pages/Admin/product/AdminProductList.tsx";
 import AdminProductEdit from "../pages/Admin/product/AdminProductEdit.tsx";
-import ProductDetail from "../pages/Category/ProducDetail.tsx"; //
+import ProductDetail from "../pages/Category/ProducDetail.tsx";
+import ShoppingBag from "../pages/Cart/shoppingBag.tsx"; //
 
 export const adminOnlyLoader = () => {
     const { isLoggedIn, user } = useAuthStore.getState();
@@ -40,14 +41,14 @@ const router = createBrowserRouter([
             { path: "register", element: <Register /> },
             { path: "myaccount", element: <MyAccount /> },
             { path: "myaccount/ProfileEdit", element: <ProfileEdit /> },
-            // 1. 메인 메뉴 클릭 시 이동할 경로 (예: /category/sunglasses)
-            { path: "category/:category", element: <ProductListPage /> },
 
-            // 2. 서브 메뉴 클릭 시 이동할 경로 (예: /category/sunglasses/s-2026-collection)
+            { path: "category/:category", element: <ProductListPage /> },
             { path: "category/:category/:id", element: <ProductListPage /> },
 
             { path: "stories", element: <Stories /> },
             { path: "product/:id", element: <ProductDetail /> },
+
+            { path: "shoppingBag", element: <ShoppingBag />},
         ],
     },
     {

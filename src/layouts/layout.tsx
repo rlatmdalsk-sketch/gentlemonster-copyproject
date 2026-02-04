@@ -13,7 +13,8 @@ function Layout() {
             <Header onLoginClick={() => setIsLoginOpen(true)} />
 
             <div className="flex-1">
-                <Outlet />
+                {/* context props로 함수 전달 */}
+                <Outlet context={{ onLoginClick: () => setIsLoginOpen(true) }} />
             </div>
 
             <Footer />

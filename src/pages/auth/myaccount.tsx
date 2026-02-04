@@ -42,7 +42,6 @@ function MyAccount() {
                 <div className={twMerge("w-full", "mt-10")}>
                     <div className={twMerge("flex", "justify-between", "w-full", "text-[12px]")}>
                         <p>프로필</p>
-                        <p>더 보기</p>
                     </div>
                     <p className={twMerge("text-[17px]", "text-[#111]", "font-[550]", "my-4")}>
                         {user?.name}<br/>

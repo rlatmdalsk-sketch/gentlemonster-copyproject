@@ -1,20 +1,30 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { MdBookmarkBorder, MdBookmark } from "react-icons/md";
 import { fetchProductDetail, fetchProducts } from "../../api/product.api.ts";
 import type { Product } from "../../types/product";
-import ProductCard from "./ProductCard.tsx";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode } from "swiper/modules";
 import { twMerge } from "tailwind-merge";
+import useAuthStore from "../../stores/useAuthStore.ts";
+import useCartStore from "../../stores/useCartStore.ts";
+import { useOutletContext } from "react-router";
+
+
 
 const ProductDetailPage = () => {
+    const { onLoginClick } = useOutletContext<{ onLoginClick: () => void }>();
+
     const { id } = useParams<{ id: string }>();
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
     const [relatedProducts, setRelatedProducts] = useState<Product[]>([]); // 유사 상품 상태 추가
     const [isBookmarked, setIsBookmarked] = useState(false);
     const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+    const navigate = useNavigate();
+    const { isLoggedIn } = useAuthStore();
+    const { addItem } = useCartStore();
+
 
     useEffect(() => {
         const loadData = async () => {
@@ -61,6 +71,28 @@ const ProductDetailPage = () => {
         loadData();
     }, [id]);
 
+    const handleAddToCart = async () => {
+        if (!isLoggedIn) {
+            onLoginClick();
+            return;
+        }
+
+        if (!product) return;
+
+        try {
+            await addItem(Number(id), 1);
+
+            if (window.confirm("장바구니에 상품을 담았습니다. 장바구니로 이동하시겠습니까?")) {
+                navigate("/shoppingBag");
+            }
+        } catch (e) {
+            console.error(e);
+            alert("장바구니 담기에 실패했습니다.");
+        }
+    };
+
+
+
     const toggleAccordion = (section: string) => {
         setOpenAccordion(prev => (prev === section ? null : section));
     };
@@ -104,7 +136,9 @@ const ProductDetailPage = () => {
 
                         <p className="text-[13px] font-normal text-[#111] mb-6">₩{product.price?.toLocaleString("ko-KR")}</p>
 
-                        <button className="w-full bg-black text-white py-4 text-[12px] font-bold rounded-[11px] mb-5 tracking-tight hover:bg-[#333] transition-colors">
+                        <button className="w-full bg-black text-white py-4 text-[12px] font-bold rounded-[11px] mb-5 tracking-tight hover:bg-[#333] transition-colors"
+                        onClick={handleAddToCart}
+                        >
                             쇼핑백에 추가하기
                         </button>
 

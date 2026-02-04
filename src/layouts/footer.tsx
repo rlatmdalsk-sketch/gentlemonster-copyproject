@@ -11,11 +11,11 @@ function Footer() {
                         className={twMerge(["flex", "gap-4"], ["text-[13px]", "text-[#111111]", "font-[500]"])}>
                         <Link to={"/customerCare"}>문의하기</Link>
                         <Link to={"/admin"}>어드민</Link>
-                        <Link to={"/"}>YOUTUBE</Link>
-                        <Link to={"/"}>법적 고지</Link>
-                        <Link to={"/"}>개인정보 처리방침</Link>
-                        <Link to={"/"}>고객 서비스</Link>
-                        <Link to={"/"}>국가: South Korea</Link>
+                        <Link to={"https://www.youtube.com/c/gentlemonsterofficial"}>YOUTUBE</Link>
+                        <Link to={""}>법적 고지</Link>
+                        <Link to={""}>개인정보 처리방침</Link>
+                        <Link to={""}>고객 서비스</Link>
+                        <Link to={""}>국가: South Korea</Link>
                     </div>
                     <p className={twMerge("text-[9px]", "text-[#858585]", "font-semibold", "mt-4")}>
                         주) 아이아이컴바인드 | 대표자명: 김한국 | 사업자번호: 119-86-38589 | 통신판매신고번호: 제 2014-서울마포-1050호(사업자 정보 확인↗) | 이메일
