@@ -1,84 +1,91 @@
-import { twMerge } from "tailwind-merge";
-
-// 임시 데이터 (나중에 API 연결)
-const ORDERS = [
-    {
-        id: "20240205-0000123",
-        date: "2024.02.05",
-        status: "배송 준비중",
-        productName: "오리가미 01",
-        price: 289000,
-        image: "https://image.gentlemonster.com/main/product/origami_01.jpg", // 임시 경로
-    },
-    {
-        id: "20240120-0000456",
-        date: "2024.01.20",
-        status: "배송 완료",
-        productName: "볼드 02",
-        price: 320000,
-        image: "https://image.gentlemonster.com/main/product/bold_02.jpg",
-    }
-];
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { fetchOrderList } from "../../api/order.api.ts";
+import type { OrderSummary } from "../../types/order.ts";
 
 function OrderList() {
+    const [orders, setOrders] = useState<OrderSummary[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const loadOrders = async () => {
+            try {
+                setIsLoading(true);
+                // 1. API 호출 시 인자 전달 (Prisma skip 에러 방지)
+                const res = await fetchOrderList(1, 10);
+
+                console.log("✅ 서버 응답 성공:", res);
+
+                // 2. 승민님 타입 OrderListResponse { data: OrderSummary[] } 구조 확인
+                if (res && Array.isArray(res.data)) {
+                    setOrders(res.data);
+                } else {
+                    console.error("❌ 데이터 구조가 예상과 다름:", res);
+                }
+            } catch (error: any) {
+                // 3. 에러 상세 분석 로그
+                if (error.response) {
+                    // 서버가 응답을 줬으나 에러인 경우 (401, 404, 500 등)
+                    console.error("❌ 서버 에러 (Status):", error.response.status);
+                    console.error("❌ 서버 에러 (Data):", error.response.data);
+
+                    if (error.response.status === 401) {
+                        alert("로그인이 필요하거나 세션이 만료되었습니다.");
+                        navigate("/login");
+                    }
+                } else if (error.request) {
+                    // 서버에 요청은 보냈으나 응답이 없는 경우 (네트워크 끊김, 서버 죽음)
+                    console.error("❌ 응답 없음 (Network Error):", error.request);
+                } else {
+                    console.error("❌ 요청 설정 에러:", error.message);
+                }
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        loadOrders();
+    }, [navigate]);
+
+    if (isLoading) return <div className="py-20 text-center">주문 내역 로딩 중...</div>;
+
     return (
-        <div className="py-10">
-            {/* 섹션 타이틀 */}
-            <div className="mb-10 border-b border-gray-300 pb-4">
-                <h2 className="text-[14px] font-bold tracking-tight text-[#111]">주문 내역</h2>
-            </div>
-
-            <div className="space-y-6">
-                {ORDERS.length > 0 ? (
-                    ORDERS.map((order) => (
-                        <div
-                            key={order.id}
-                            className="bg-[#ebebeb] p-6 rounded-[4px] flex flex-col md:flex-row gap-8 items-center border border-transparent hover:border-gray-400 transition-all"
-                        >
-                            {/* 상품 이미지 영역 (흰색 배경 지양 - 투명하게 처리) */}
-                            <div className="w-[120px] h-[120px] bg-transparent flex items-center justify-center overflow-hidden">
-                                <img
-                                    src={order.image}
-                                    alt={order.productName}
-                                    className="max-w-full max-h-full object-contain mix-blend-multiply"
-                                />
+        <div className="max-w-[1000px] mx-auto px-4 py-16">
+            <h2 className="text-[24px] font-bold mb-10">주문 내역</h2>
+            {orders.length === 0 ? (
+                <div className="py-24 text-center border-t">
+                    <p className="text-gray-400">주문 내역이 없습니다.</p>
+                </div>
+            ) : (
+                <div className="space-y-6">
+                    {orders.map((order) => (
+                        <div key={order.id} className="border rounded-lg p-6 shadow-sm">
+                            <div className="flex justify-between mb-4 pb-4 border-b">
+                                <div className="text-[13px] text-gray-500">
+                                    주문번호: ORD-{order.id} | 날짜: {new Date(order.createdAt).toLocaleDateString()}
+                                </div>
+                                <div className="font-bold text-blue-600">{order.status}</div>
                             </div>
-
-                            {/* 주문 정보 영역 */}
-                            <div className="flex-1 flex flex-col gap-1 w-full">
-                                <div className="flex justify-between items-start">
-                                    <span className="text-[11px] text-gray-500 font-medium">{order.date} | 주문번호 {order.id}</span>
-                                    <span className={twMerge(
-                                        "text-[11px] font-bold px-2 py-1 rounded",
-                                        order.status === "배송 완료" ? "text-blue-600" : "text-[#111]"
-                                    )}>
-                    {order.status}
-                  </span>
+                            {order.items.map((item) => (
+                                <div key={item.id} className="flex gap-4 items-center mb-4 last:mb-0">
+                                    <div className="w-16 h-20 bg-gray-100 rounded overflow-hidden">
+                                        <img src={item.product.images[0]?.url} alt="" className="w-full h-full object-cover" />
+                                    </div>
+                                    <div className="flex-1">
+                                        <div className="font-bold text-[14px]">{item.product.name}</div>
+                                        <div className="text-[12px] text-gray-500">수량: {item.quantity}개</div>
+                                    </div>
+                                    <div className="font-bold">₩{item.price.toLocaleString()}</div>
                                 </div>
-
-                                <h3 className="text-[16px] font-bold mt-2">{order.productName}</h3>
-                                <p className="text-[13px] font-medium text-gray-700">₩{order.price.toLocaleString()}</p>
-
-                                <div className="mt-6 flex gap-3">
-                                    <button className="text-[11px] font-bold border border-black px-4 py-2 hover:bg-black hover:text-white transition-colors">
-                                        주문 상세 보기
-                                    </button>
-                                    {order.status === "배송 완료" && (
-                                        <button className="text-[11px] font-bold bg-white border border-gray-300 px-4 py-2 hover:bg-gray-50 transition-colors text-gray-600">
-                                            반품 신청
-                                        </button>
-                                    )}
-                                </div>
+                            ))}
+                            <div className="mt-4 pt-4 border-t text-right">
+                                <span className="text-gray-500 mr-2">총 결제 금액:</span>
+                                <span className="text-lg font-bold">₩{order.totalPrice.toLocaleString()}</span>
                             </div>
                         </div>
-                    ))
-                ) : (
-                    /* 주문 내역이 없을 때 */
-                    <div className="py-40 text-center">
-                        <p className="text-[12px] text-gray-400">최근 6개월간 주문하신 내역이 없습니다.</p>
-                    </div>
-                )}
-            </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }
