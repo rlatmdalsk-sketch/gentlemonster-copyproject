@@ -18,7 +18,7 @@ function ProfileHeader() {
                     <Link to={"/myaccount"}>
                         <button
                             className={twMerge(
-                                "border text-[12px] px-[11px] py-[7px] text-[#858585] bg-none rounded-[20px] border-[#dfe3e8] hover:bg-[#DFE3E8] hover:text-[#111] transition-colors"
+                                "border cursor-pointer text-[12px] px-[11px] py-[7px] text-[#858585] bg-none rounded-[20px] border-[#dfe3e8] hover:bg-[#DFE3E8] hover:text-[#111] transition-colors"
                             )}
                         >
                             계정
@@ -27,10 +27,10 @@ function ProfileHeader() {
                     <Link to={"/myaccount/orderList"}>
                         <button
                             className={twMerge(
-                                "border text-[12px] px-[11px] py-[7px] text-[#858585] bg-none rounded-[20px] border-[#dfe3e8] hover:bg-[#DFE3E8] hover:text-[#111] transition-colors"
+                                "border cursor-pointer text-[12px] px-[11px] py-[7px] text-[#858585] bg-none rounded-[20px] border-[#dfe3e8] hover:bg-[#DFE3E8] hover:text-[#111] transition-colors"
                             )}
                         >
-                            주문내역
+                        구매한 제품
                         </button>
                     </Link>
                 </div>

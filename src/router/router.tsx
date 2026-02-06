@@ -22,7 +22,8 @@ import ProfileLayout from "../layouts/ProfileLayout.tsx";
 import OrderList from "../pages/auth/orderList.tsx";
 import OrderPage from "../pages/Cart/orderPage.tsx";
 import OrderSuccessPage from "../pages/Cart/orderSuccessPage.tsx";
-import OrderFailPage from "../pages/Cart/orderFailPage.tsx"; //
+import OrderFailPage from "../pages/Cart/orderFailPage.tsx";
+import OrderDetail from "../pages/auth/orderDetail.tsx"; //
 
 export const adminOnlyLoader = () => {
     const { isLoggedIn, user } = useAuthStore.getState();
@@ -51,6 +52,7 @@ const router = createBrowserRouter([
                     { index: true, element: <MyAccount /> },
                     { path: "profileEdit", element: <ProfileEdit /> },
                     { path: "orderList", element: <OrderList /> },
+                    { path: "orderDetail", element: <OrderDetail />},
                 ],
             },
 

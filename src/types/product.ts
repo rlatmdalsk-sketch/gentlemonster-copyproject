@@ -32,6 +32,7 @@ export interface ProductListParams {
     limit: number;
     category?: string;
     sort?: "latest" | "lowPrice" | "highPrice";
+    keyword?: string;
 }
 
 export interface ProductListResponse {

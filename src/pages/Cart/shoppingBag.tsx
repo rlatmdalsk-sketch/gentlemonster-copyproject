@@ -35,11 +35,13 @@ const ShoppingBag = () => {
 
     if (items.length === 0) {
         return (
-            <div className="w-full h-screen flex flex-col items-center justify-center ">
-                <div className="flex gap-10 mb-20 absolute top-10">
-                    <span className="text-[13px] font-bold border-b border-black pb-1">쇼핑백</span>
+            <div className="w-full h-screen flex flex-col items-center py-16 ">
+                <div className="flex gap-6">
+                    <button className="text-[17px] font-[450] bg-[#e2e4e5] h-[30px] px-[12px] rounded-lg">
+                        쇼핑백<sup>{getTotalCount()}</sup>
+                    </button>
                 </div>
-                <p className="text-[12px] mb-8 font-medium">쇼핑백에 추가된 제품이 없습니다.</p>
+                <p className="text-[12px] mb-8 font-medium pt-56">쇼핑백에 추가된 제품이 없습니다.</p>
                 <Link
                     to="/"
                     className="px-20 py-4 border border-gray-300 text-[12px] bg-white hover:bg-gray-50 transition-colors rounded-[5px]">
