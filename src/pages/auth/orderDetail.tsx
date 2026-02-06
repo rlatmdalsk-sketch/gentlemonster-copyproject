@@ -52,7 +52,7 @@ function OrderDetail() {
     if (!order) return null;
 
     return (
-        <div className="max-w-[1100px] mx-auto px-6 py-24">
+        <div className="max-w-[1100px] mx-auto px-6 py-24 ">
             <button
                 onClick={() => navigate(-1)}
                 className="text-[10px] font-bold text-gray-500 hover:text-black mb-8 uppercase tracking-widest flex items-center gap-2 transition-colors"
@@ -81,7 +81,7 @@ function OrderDetail() {
                                     <img
                                         src={item.product?.images?.[0]?.url}
                                         alt={item.product?.name}
-                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                        className="w-full h-full object-cover  transition-transform duration-700 group-hover:scale-105"
                                     />
                                 </div>
 
@@ -106,9 +106,9 @@ function OrderDetail() {
 
                 {/* 오른쪽: 주문 정보 & 결제 정보 */}
                 <div className="lg:col-span-1">
-                    <div className="border border-gray-200 p-8 sticky top-24">
+                    <div className="border border-gray-200 p-8 sticky top-24 ">
                         {/* 주문 정보 */}
-                        <div className="mb-8 pb-8 border-b border-gray-200">
+                        <div className="mb-8 pb-8 border-b border-gray-200 ">
                             <h3 className="text-[12px] font-bold uppercase tracking-widest mb-6">주문 정보</h3>
                             <div className="space-y-3 text-[11px]">
                                 <div className="flex justify-between">

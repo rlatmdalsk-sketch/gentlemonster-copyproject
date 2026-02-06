@@ -30,10 +30,6 @@ export const CATEGORY_DATA: Record<string, Record<string, CategoryContent>> = {
             title: "선글라스 베스트셀러",
             description: "가장 사랑받는 아이코닉한 선글라스 컬렉션을 확인해 보세요.",
         },
-        "s-tinted-lenses": {
-            title: "틴트 렌즈 선글라스",
-            description: "다채로운 컬러 렌즈로 유니크한 룩을 완성해 보세요.",
-        },
     },
 
     /* --- 안경 카테고리 --- */
@@ -61,14 +57,6 @@ export const CATEGORY_DATA: Record<string, Record<string, CategoryContent>> = {
         "g-bestsellers": {
             title: "안경 베스트셀러",
             description: "지금 가장 인기가 많은 안경들을 확인해 보세요.",
-        },
-        "g-blue-light-lenses": {
-            title: "블루라이트 안경",
-            description: "블루라이트 차단 렌즈를 사용한 기능성과 스타일을 모두 잡은 컬렉션입니다.",
-        },
-        "g-tinted-lenses": {
-            title: "틴트 렌즈 안경",
-            description: "다양한 색상의 틴트 렌즈로 감각적인 무드를 연출하는 안경 컬렉션입니다.",
         },
     },
     /*컬렉션 카테고리*/

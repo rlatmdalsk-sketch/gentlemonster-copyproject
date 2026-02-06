@@ -33,7 +33,7 @@ function OrderList() {
     );
 
     return (
-        <div className="max-w-[1100px] mx-auto px-6 py-24">
+        <div className="max-w-[1100px] mx-auto px-6 py-10  shadow-md">
             <header className="mb-12">
                 <h2 className="text-[22px] font-bold tracking-tight text-black mb-2">주문 내역</h2>
                 <p className="text-[11px] text-gray-400 tracking-wider">ORDER HISTORY</p>
@@ -41,7 +41,7 @@ function OrderList() {
             </header>
 
             {orders.length === 0 ? (
-                <div className="w-full py-40 text-center">
+                <div className="w-full py-40 text-center ">
                     <div className="max-w-md mx-auto">
                         <div className="w-16 h-[2px] bg-gray-300 mx-auto mb-8" />
                         <p className="text-[13px] mb-3 font-medium text-gray-800">아직 구매한 제품이 없습니다.</p>
@@ -54,7 +54,7 @@ function OrderList() {
                     </div>
                 </div>
             ) : (
-                <div className="space-y-16">
+                <div className="space-y-16 border-gray-200 p-4 flex flex-col gap-2">
                     {orders.map((order) => (
                         <div key={order.id} className="group">
                             {/* 주문 헤더 */}

@@ -11,7 +11,7 @@ import "swiper/css/navigation";
 import {Swiper, SwiperSlide} from 'swiper/react';
 import {twMerge} from "tailwind-merge";
 import {Pagination, Navigation} from "swiper/modules";
-import {Link} from "react-router-dom";
+import {Link, useNavigate } from "react-router-dom";
 import LookBookSlider from "./components/LookBookSlider.tsx";
 import BestSellerSlider from "./components/BestSellerSlider.tsx";
 
@@ -21,32 +21,32 @@ const SLIDES = [
         src: video1,
         title: "2026 COLLECTION",
         type: "video",
-        buyLink: "/category/collections/2026-collection",
-        campaignLink: "/stories/2026-collection"
+        buyLink: "/category/collections/c-2026-collection",
+        campaignLink: "/stories"
     },
     {
         id: 2,
         src: video2,
         title: "FALL COLLECTION",
         type: "video",
-        buyLink: "/category/collections/2025-fall-collection",
-        campaignLink: "/stories/2025-fall-collection"
+        buyLink: "/category/collections/c-2025-fall-collection",
+        campaignLink: "/stories"
     },
     {
         id: 3,
         src: video3,
         title: "THE ROOM: ESCAPE THE HUNT",
         type: "image",
-        buyLink: "/shop/theroom",
-        campaignLink: "/stories/theroom"
+        buyLink: "/stories",
+        campaignLink: "/stories"
     },
     {
         id: 4,
         src: video4,
         title: "BOLD COLLECTION",
         type: "video",
-        buyLink: "/category/collections/2025-bold-collection",
-        campaignLink: "/stories/2025-bold-collection"
+        buyLink: "/category/collections/c-2025-bold-collection",
+        campaignLink: "/stories"
     },
 ];
 
@@ -159,7 +159,7 @@ function Home() {
 
                     // 3. 다른 요소(텍스트, 이미지)가 드래그되어 따라오는 현상 방지
                     className={twMerge(
-                        "w-full h-full relative cursor-grab active:cursor-grabbing select-none",
+                        "w-full h-full relative cursor-e-resize active:cursor-grabbing select-none",
                         [
                             "[&_img]:pointer-events-none", // 이미지 드래그 방지 (중요!)
                             "[&_button]:select-none",      // 버튼 텍스트 선택 방지
@@ -193,14 +193,14 @@ function Home() {
                                         <a
                                             href={slide.buyLink}
                                             onClick={(e) => e.stopPropagation()}
-                                            className="px-[23px] select-none  py-2 border border-white text-white text-[11px] font-medium rounded-full hover:bg-white  select-nonehover:text-black transition-all duration-300 text-center"
+                                            className="px-[23px] select-none  py-2 border border-white text-white text-[11px] font-medium rounded-full   select-nonehover:text-black 0 text-center"
                                         >
                                             구매하기
                                         </a>
                                         <a
                                             href={slide.campaignLink}
                                             onClick={(e) => e.stopPropagation()}
-                                            className="px-[20px] py-2 border  select-none border-white text-white text-[11px] font-medium rounded-full hover:bg-white select-nonehover:text-black transition-all duration-300 text-center"
+                                            className="px-[20px] py-2 border  select-none border-white text-white text-[11px] font-medium rounded-full  select-nonehover:text-black  text-center"
                                         >
                                             캠페인 보기
                                         </a>

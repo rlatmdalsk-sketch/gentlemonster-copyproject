@@ -7,6 +7,7 @@ import { LuUser } from "react-icons/lu";
 import useAuthStore from "../stores/useAuthStore.ts";
 import { Logo } from "../pages/components/Logo.tsx";
 import { getCategories } from "../api/category.api.ts";
+import SearchSlide from "../pages/components/SearchSlide.tsx";
 
 export default function Header({ onLoginClick }: { onLoginClick: () => void }) {
     const [categories, setCategories] = useState<any[]>([]);
@@ -15,8 +16,8 @@ export default function Header({ onLoginClick }: { onLoginClick: () => void }) {
     const [isScrolled, setIsScrolled] = useState(false);
     const location = useLocation();
     const { isLoggedIn } = useAuthStore();
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
 
-    // 🌟 수정: API 데이터를 그대로 쓰되, 없으면 빈 배열
     const displayMenu = categories.length > 0 ? categories : [];
 
     const handleCartClick = (e: React.MouseEvent) => {
@@ -32,12 +33,10 @@ export default function Header({ onLoginClick }: { onLoginClick: () => void }) {
                 const res = await getCategories();
                 console.log("실제 데이터:", res);
 
-                // 🌟 중요: 콘솔에 찍힌대로 res 자체가 배열이면 res를,
-                // res.data가 배열이면 res.data를 넣으세요.
                 const rawData = Array.isArray(res) ? res : res.data;
 
                 if (rawData) {
-                    setCategories(rawData); // 트리 변환 함수 거치지 말고 바로 저장!
+                    setCategories(rawData);
                 }
             } catch (error) {
                 console.error("메뉴 로드 실패", error);
@@ -85,130 +84,137 @@ export default function Header({ onLoginClick }: { onLoginClick: () => void }) {
     const isVideoPassed = !isHome || isScrolled;
 
     return (
-        <div className="relative w-full">
-            <div
-                onMouseLeave={() => setHoveredMenu(null)}
-                className={twMerge(
-                    "left-0 right-0 z-50 transition-all duration-300",
-                    isHome ? "fixed" : "absolute",
-                    !isHome
-                        ? "bg-[#f2f3f5] text-black"
-                        : isScrolled
-                          ? "bg-[#f2f3f5]/60 backdrop-blur-xl text-black"
-                          : "bg-transparent text-white",
-                )}>
-                <div className="grid grid-cols-3 items-center h-[90px] px-[60px]">
-                    <nav className="flex gap-5 h-full items-center">
-                        {displayMenu.map(menu => {
-                            const parentPath = menu.path.replace(/^\//, "");
-                            const firstChildPath = menu.children && menu.children.length > 0
-                                ? `/category/${parentPath}/${menu.children[0].path.replace(/^\//, "")}`
-                                : fixPath(menu.path);
+        <>
+            <div className="relative w-full">
+                <SearchSlide
+                    isOpen={isSearchOpen}
+                    onClose={() => setIsSearchOpen(false)}
+                />
+                <div className="relative w-full">
+                    <div
+                        onMouseLeave={() => setHoveredMenu(null)}
+                        className={twMerge(
+                            "left-0 right-0 z-50 transition-all duration-300",
+                            isHome ? "fixed" : "absolute",
+                            !isHome
+                                ? "bg-[#f2f3f5] text-black"
+                                : isScrolled
+                                    ? "bg-[#f2f3f5]/60 backdrop-blur-xl text-black"
+                                    : "bg-transparent text-white",
+                        )}>
+                        <div className="grid grid-cols-3 items-center h-[90px] px-[60px]">
+                            <nav className="flex gap-5 h-full items-center">
+                                {displayMenu.map(menu => {
+                                    const parentPath = menu.path.replace(/^\//, "");
+                                    const firstChildPath = menu.children && menu.children.length > 0
+                                        ? `/category/${parentPath}/${menu.children[0].path.replace(/^\//, "")}`
+                                        : fixPath(menu.path);
 
-                            // 2. '더 알아보기' 또는 path에 'stories'가 포함된 경우 /stories로 고정
-                            const isStoriesMenu = menu.name.includes("더 알아보기") || menu.path.includes("stories");
-                            const topMenuLink = isStoriesMenu ? "/stories" : firstChildPath;
-
-                            return (
-                                <div
-                                    key={menu.id}
-                                    onMouseEnter={e => handleMenuHover(menu.name, e)}
-                                    className="relative h-full flex items-center cursor-pointer ">
-                                    <Link to={topMenuLink} className="text-[14px] font-[550] ">
-                                        {menu.name}
-                                    </Link>
-                                </div>
-                            );
-                        })}
-                    </nav>
-
-                    <div className="flex justify-center items-center">
-                        <Link
-                            to="/"
-                            onClick={handleLogoClick}
-                            className={twMerge(
-                                "w-[280px] md:w-[305px] transition-all duration-300 hover:opacity-70",
-                                logoColorClass, // 동적으로 결정된 색상 클래스 적용
-                            )}>
-                            <Logo className="w-full h-auto" />
-                        </Link>
-                    </div>
-
-                    <div className="flex gap-3 justify-end items-center">
-                        <div className="flex items-center">
-                            <Link to="/search" className="p-1">
-                                <IoIosSearch size={24} />
-                            </Link>
-                        </div>
-                        {isLoggedIn ? (
-                            <Link to="/myaccount" className="p-1 hover:opacity-50 transition-opacity">
-                                <LuUser size={24} />
-                            </Link>
-                        ) : (
-                            <button
-                                onClick={e => {
-                                    e.preventDefault();
-                                    onLoginClick();
-                                }}
-                                className="p-1 hover:opacity-50 transition-opacity">
-                                <LuUser size={24} />
-                            </button>
-                        )}
-
-                        <Link
-                            to="/shoppingBag"
-                            onClick={handleCartClick} // 클릭 핸들러 연결
-                            className="p-1 hover:opacity-50 transition-opacity"
-                        >
-                            <RiShoppingBagLine size={24} />
-                        </Link>
-                    </div>
-                </div>
-
-                {/* 서브메뉴 - 블러 컨테이너 안에 포함 */}
-                <div
-                    className={twMerge(
-                        "overflow-hidden transition-all duration-500",
-                        hoveredMenu ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0",
-                    )}>
-                    <div className="py-2 px-[10px]">
-                        {displayMenu.map(menu => (
-                            <div
-                                key={menu.id}
-                                className={twMerge(
-                                    "flex flex-col gap-3",
-                                    hoveredMenu === menu.name ? "opacity-100" : "opacity-0 hidden",
-                                )}
-                                style={{ marginLeft: `${menuPositions[menu.name] || 0}px` }}>
-                                {menu.children?.map((subItem: any) => {
-                                    // 🌟 stories 카테고리인 경우 예외 처리
-                                    const isStories = menu.path.includes("stories") || subItem.path.includes("stories");
-
-                                    // stories라면 /stories로, 아니면 기존처럼 /category/...로 보냄
-                                    const finalPath = isStories
-                                        ? "/stories"
-                                        : `/category/${menu.path.replace(/^\//, "")}/${subItem.path.replace(/^\//, "")}`;
+                                    const isStoriesMenu = menu.name.includes("더 알아보기") || menu.path.includes("stories");
+                                    const topMenuLink = isStoriesMenu ? "/stories" : firstChildPath;
 
                                     return (
-                                        <Link
-                                            key={subItem.id}
-                                            to={finalPath}
-                                            className={twMerge(
-                                                "text-[13px] font-[500] hover:opacity-70 whitespace-nowrap",
-                                                isVideoPassed ? "text-black" : "text-white"
-                                            )}
-                                        >
-                                            {subItem.name}
-                                        </Link>
+                                        <div
+                                            key={menu.id}
+                                            onMouseEnter={e => handleMenuHover(menu.name, e)}
+                                            className="relative h-full flex items-center cursor-pointer ">
+                                            <Link to={topMenuLink} className="text-[14px] font-[550] ">
+                                                {menu.name}
+                                            </Link>
+                                        </div>
                                     );
                                 })}
+                            </nav>
+
+                            <div className="flex justify-center items-center">
+                                <Link
+                                    to="/"
+                                    onClick={handleLogoClick}
+                                    className={twMerge(
+                                        "w-[280px] md:w-[305px] transition-all duration-300 hover:opacity-70",
+                                        logoColorClass,
+                                    )}>
+                                    <Logo className="w-full h-auto" />
+                                </Link>
                             </div>
-                        ))}
+
+                            <div className="flex gap-3 justify-end items-center">
+                                <div className="flex items-center">
+                                    <button
+                                        onClick={() => setIsSearchOpen(true)}
+                                        className="p-1 hover:opacity-50 transition-opacity cursor-pointer"
+                                    >
+                                        <IoIosSearch size={24} />
+                                    </button>
+                                </div>
+                                {isLoggedIn ? (
+                                    <Link to="/myaccount" className="p-1 hover:opacity-50 transition-opacity">
+                                        <LuUser size={24} />
+                                    </Link>
+                                ) : (
+                                    <button
+                                        onClick={e => {
+                                            e.preventDefault();
+                                            onLoginClick();
+                                        }}
+                                        className="p-1 hover:opacity-50 transition-opacity">
+                                        <LuUser size={24} />
+                                    </button>
+                                )}
+
+                                <Link
+                                    to="/shoppingBag"
+                                    onClick={handleCartClick}
+                                    className="p-1 hover:opacity-50 transition-opacity"
+                                >
+                                    <RiShoppingBagLine size={24} />
+                                </Link>
+                            </div>
+                        </div>
+
+                        <div
+                            className={twMerge(
+                                "overflow-hidden transition-all duration-500",
+                                hoveredMenu ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0",
+                            )}>
+                            <div className="py-2 px-[10px]">
+                                {displayMenu.map(menu => (
+                                    <div
+                                        key={menu.id}
+                                        className={twMerge(
+                                            "flex flex-col gap-3",
+                                            hoveredMenu === menu.name ? "opacity-100" : "opacity-0 hidden",
+                                        )}
+                                        style={{ marginLeft: `${menuPositions[menu.name] || 0}px` }}>
+                                        {menu.children?.map((subItem: any) => {
+                                            const isStories = menu.path.includes("stories") || subItem.path.includes("stories");
+
+                                            const finalPath = isStories
+                                                ? "/stories"
+                                                : `/category/${menu.path.replace(/^\//, "")}/${subItem.path.replace(/^\//, "")}`;
+
+                                            return (
+                                                <Link
+                                                    key={subItem.id}
+                                                    to={finalPath}
+                                                    className={twMerge(
+                                                        "text-[13px] font-[500] hover:opacity-70 whitespace-nowrap",
+                                                        isVideoPassed ? "text-black" : "text-white"
+                                                    )}
+                                                >
+                                                    {subItem.name}
+                                                </Link>
+                                            );
+                                        })}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
+
+                    {!isHome && <div className="h-[90px] mobile:h-[56px] w-full" />}
                 </div>
             </div>
-
-            {!isHome && <div className="h-[90px] mobile:h-[56px] w-full" />}
-        </div>
+        </>
     );
 }

@@ -23,7 +23,8 @@ import OrderList from "../pages/auth/orderList.tsx";
 import OrderPage from "../pages/Cart/orderPage.tsx";
 import OrderSuccessPage from "../pages/Cart/orderSuccessPage.tsx";
 import OrderFailPage from "../pages/Cart/orderFailPage.tsx";
-import OrderDetail from "../pages/auth/orderDetail.tsx"; //
+import OrderDetail from "../pages/auth/orderDetail.tsx";
+import Search from "../pages/Search.tsx"; //
 
 export const adminOnlyLoader = () => {
     const { isLoggedIn, user } = useAuthStore.getState();
@@ -71,6 +72,8 @@ const router = createBrowserRouter([
                     { path: "fail", element: <OrderFailPage /> },
                 ],
             },
+            {path: "search/:keyword", element: <Search />}
+
         ],
     },
 
