@@ -29,8 +29,7 @@ const Wishlist = () => {
                 list = res;
             }
 
-            // 🌟 중복 제거 로직 추가
-            // Map 객체를 사용하여 name이 이미 존재하면 무시하고, 없으면 추가합니다.
+
             const uniqueList = Array.from(
                 new Map(
                     list.map(item => {
@@ -76,7 +75,6 @@ const Wishlist = () => {
             </div>
         );
 
-    // 상품이 없을 때 UI
     if (wishlist.length === 0) {
         return (
             <div className="w-full h-screen flex flex-col items-center py-16">
