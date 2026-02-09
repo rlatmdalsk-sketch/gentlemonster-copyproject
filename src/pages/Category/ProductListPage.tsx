@@ -7,6 +7,7 @@ import { fetchProducts } from "../../api/product.api.ts";
 import type { Product } from "../../types/product.ts";
 import ProductCard from "./ProductCard.tsx";
 import ProductListHero from "../ProdcutListHero.tsx";
+import ProductListHeader from "../components/ProductListHeader.tsx";
 
 const ProductListPage = () => {
     const { category, id } = useParams<{ category: string; id: string }>();
@@ -28,55 +29,37 @@ const ProductListPage = () => {
                 setLoading(true);
                 setError(null);
 
-                // 카테고리 path 정리
                 const categoryPath = id.startsWith('/') ? id.substring(1) : id;
 
-                console.log('📍 요청 카테고리 경로:', categoryPath);
 
                 // 1. 카테고리 정보 가져오기
                 const categoryResponse = await getCategoryByPath(categoryPath);
-                console.log('📦 카테고리 응답:', categoryResponse);
 
                 const categoryId = categoryResponse.category?.id;
 
                 if (!categoryId) {
-                    console.warn('⚠️ 카테고리 ID를 찾을 수 없습니다');
                     setProducts([]);
                     return;
                 }
 
-                console.log('🔍 카테고리 ID:', categoryId);
-
-                // 2. 전체 상품 가져와서 카테고리로 필터링
                 const productsResponse = await fetchProducts({
                     page: 1,
                     limit: 100,
                     sort: "latest"
                 });
 
-                console.log('📦 전체 상품 응답:', productsResponse);
-
-                // 상품 배열 추출
                 const allProducts = productsResponse.data || productsResponse || [];
-                console.log('📦 전체 상품 개수:', allProducts.length);
-
-                // 해당 카테고리 또는 하위 카테고리의 상품만 필터링
                 const filtered = allProducts.filter((p: Product) => {
-                    // categoryId가 일치하거나
                     if (p.categoryId === categoryId) return true;
 
-                    // category.path에 현재 경로가 포함되어 있으면
                     if (p.category?.path && p.category.path.includes(categoryPath)) return true;
 
                     return false;
                 });
 
-                console.log('🎯 필터링된 상품 개수:', filtered.length);
                 setProducts(filtered);
 
             } catch (error: any) {
-                console.error("❌ 데이터 로드 실패:", error);
-                console.error("❌ 에러 응답:", error.response?.data);
                 setError(error.response?.data?.message || "상품을 불러오는데 실패했습니다.");
                 setProducts([]);
             } finally {
@@ -98,8 +81,9 @@ const ProductListPage = () => {
     }
 
     return (
+        <>
+            <ProductListHeader />
         <main className="relative w-full min-h-screen">
-            {/* Hero 섹션 */}
             <ProductListHero currentCategory={currentCategory as any} />
 
             {/* 상품 리스트 */}
@@ -138,6 +122,7 @@ const ProductListPage = () => {
                 )}
             </div>
         </main>
+        </>
     );
 };
 

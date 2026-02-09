@@ -118,7 +118,7 @@ export default function Header({ onLoginClick }: { onLoginClick: () => void }) {
                                             key={menu.id}
                                             onMouseEnter={e => handleMenuHover(menu.name, e)}
                                             className="relative h-full flex items-center cursor-pointer ">
-                                            <Link to={topMenuLink} className="text-[12px] font-[550] ">
+                                            <Link to={topMenuLink} className="text-[13px] font-[550] ">
                                                 {menu.name}
                                             </Link>
                                         </div>
@@ -198,7 +198,7 @@ export default function Header({ onLoginClick }: { onLoginClick: () => void }) {
                                                     key={subItem.id}
                                                     to={finalPath}
                                                     className={twMerge(
-                                                        "text-[12px] font-[500] hover:opacity-70 whitespace-nowrap",
+                                                        "text-[12.5px] font-[500] hover:opacity-70 whitespace-nowrap",
                                                         isVideoPassed ? "text-black" : "text-white"
                                                     )}
                                                 >
