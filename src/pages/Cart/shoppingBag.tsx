@@ -18,13 +18,7 @@ const ShoppingBag = () => {
         setOpenAccordion(prev => (prev === section ? null : section));
     };
 
-    // 🌟 수량 변경 핸들러 (디자인 유지하면서 로직만 추가)
-    const handleQuantity = (id: number, current: number, delta: number) => {
-        const next = current + delta;
-        if (next >= 1) {
-            updateQuantity(id, next);
-        }
-    };
+
 
     if (loading)
         return (
@@ -36,9 +30,12 @@ const ShoppingBag = () => {
     if (items.length === 0) {
         return (
             <div className="w-full h-screen flex flex-col items-center py-16 ">
-                <div className="flex gap-6">
-                    <button className="text-[17px] font-[450] bg-[#e2e4e5] h-[30px] px-[12px] rounded-lg">
+                <div className="flex gap-6 text-center">
+                    <button className="text-[17px] font-[450] bg-[#e2e4e5] h-[30px] px-[12px] rounded-lg ">
                         쇼핑백<sup>{getTotalCount()}</sup>
+                    </button>
+                    <button onClick={()=>navigate("/s-WishList")} className="text-[17px] font-[#111]  h-[30px] px-[12px] rounded-lg hover:bg-[#e2e4e5] font-[450] cursor-pointer">
+                        위시리스트<sup>0</sup>
                     </button>
                 </div>
                 <p className="text-[12px] mb-8 font-medium pt-56">쇼핑백에 추가된 제품이 없습니다.</p>
@@ -58,6 +55,9 @@ const ShoppingBag = () => {
                 <div className="flex gap-6">
                     <button className="text-[17px] font-[450] bg-[#e2e4e5] h-[30px] px-[12px] rounded-lg">
                         쇼핑백<sup>{getTotalCount()}</sup>
+                    </button>
+                    <button onClick={()=>navigate("/s-WishList")} className="text-[17px] font-[#111]  h-[30px] px-[12px] rounded-lg hover:bg-[#e2e4e5] font-[450] cursor-pointer">
+                        위시리스트<sup>0</sup>
                     </button>
                 </div>
                 <button
