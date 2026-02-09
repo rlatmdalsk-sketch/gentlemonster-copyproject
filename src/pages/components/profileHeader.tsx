@@ -33,6 +33,15 @@ function ProfileHeader() {
                         구매한 제품
                         </button>
                     </Link>
+                    <Link to={"/myaccount/WishList"}>
+                        <button
+                            className={twMerge(
+                                "border cursor-pointer text-[12px] px-[11px] py-[7px] text-[#858585] bg-none rounded-[20px] border-[#dfe3e8] hover:bg-[#DFE3E8] hover:text-[#111] transition-colors"
+                            )}
+                        >
+                            위시 리스트
+                        </button>
+                    </Link>
                 </div>
 
                 <button

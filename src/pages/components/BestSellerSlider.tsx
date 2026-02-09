@@ -85,11 +85,6 @@ function BestSellerSlider() {
                                                 <p className="font-bold mb-1 uppercase tracking-tighter">{item.name}</p>
                                                 <p className="text-gray-600">₩{item.price?.toLocaleString()}</p>
                                             </div>
-                                            <div className="pt-1">
-                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                                                    <path d="M5 5v16l7-5 7 5V5a2 2 0 00-2-2H7a2 2 0 00-2-2z" />
-                                                </svg>
-                                            </div>
                                         </div>
                                     </div>
                                 </Link>

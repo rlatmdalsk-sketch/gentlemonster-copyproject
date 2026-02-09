@@ -25,7 +25,8 @@ import OrderSuccessPage from "../pages/Cart/orderSuccessPage.tsx";
 import OrderFailPage from "../pages/Cart/orderFailPage.tsx";
 import OrderDetail from "../pages/auth/orderDetail.tsx";
 import Search from "../pages/Search.tsx";
-import AdminOrderPage from "../pages/Admin/AdminOrderPage.tsx"; //
+import AdminOrderPage from "../pages/Admin/AdminOrderPage.tsx";
+import WishListPage from "../pages/auth/WishList.tsx"; //
 
 export const adminOnlyLoader = () => {
     const { isLoggedIn, user } = useAuthStore.getState();
@@ -55,6 +56,7 @@ const router = createBrowserRouter([
                     { path: "profileEdit", element: <ProfileEdit /> },
                     { path: "orderList", element: <OrderList /> },
                     { path: "orderDetail", element: <OrderDetail />},
+                    { path: "WishList", element: <WishListPage /> }
                 ],
             },
 

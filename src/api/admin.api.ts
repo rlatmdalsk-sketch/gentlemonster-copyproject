@@ -1,4 +1,4 @@
-// src/api/admin.api.ts
+
 import { httpClient as api } from "./axios";
 
 export const fetchAllUsers = async (page = 1) => {

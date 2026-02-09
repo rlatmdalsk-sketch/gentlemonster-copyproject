@@ -31,7 +31,6 @@ export default function Header({ onLoginClick }: { onLoginClick: () => void }) {
         const fetchCategories = async () => {
             try {
                 const res = await getCategories();
-                console.log("실제 데이터:", res);
 
                 const rawData = Array.isArray(res) ? res : res.data;
 

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { MdBookmarkBorder, MdBookmark } from "react-icons/md";
 import { fetchProductDetail, fetchProducts } from "../../api/product.api.ts";
 import type { Product } from "../../types/product";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -9,19 +8,21 @@ import { twMerge } from "tailwind-merge";
 import useAuthStore from "../../stores/useAuthStore.ts";
 import useCartStore from "../../stores/useCartStore.ts";
 import { useOutletContext } from "react-router";
+import Bookmark from "../components/Bookmark.tsx";
+
 
 const ProductDetailPage = () => {
     const { onLoginClick } = useOutletContext<{ onLoginClick: () => void }>();
-
     const { id } = useParams<{ id: string }>();
-    const [product, setProduct] = useState<Product | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [relatedProducts, setRelatedProducts] = useState<Product[]>([]); // 유사 상품 상태 추가
-    const [isBookmarked, setIsBookmarked] = useState(false);
-    const [openAccordion, setOpenAccordion] = useState<string | null>(null);
     const navigate = useNavigate();
     const { isLoggedIn } = useAuthStore();
     const { addItem } = useCartStore();
+
+    const [product, setProduct] = useState<Product | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+    const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+
 
     useEffect(() => {
         const loadData = async () => {
@@ -40,18 +41,14 @@ const ProductDetailPage = () => {
                         ? productsResponse
                         : productsResponse.data || [];
 
-                    // 🌟 상품 이름(name)을 키로 사용하여 중복 제거
                     const uniqueByName = new Map();
 
                     allProducts.forEach((p: Product) => {
-                        // 1. 현재 보고 있는 상품과 이름이 같으면 제외 (다른 카테고리에 있는 본인 제거)
                         if (p.name === currentProduct.name) return;
 
-                        // 2. 소재(material) 비교
                         const pMaterial = p.material?.toString().trim().toLowerCase();
                         const tMaterial = targetMaterial.toString().trim().toLowerCase();
 
-                        // 3. 조건: 소재가 같고 + 아직 Map에 등록되지 않은 '이름'일 때만 추가
                         if (pMaterial === tMaterial && !uniqueByName.has(p.name)) {
                             uniqueByName.set(p.name, p);
                         }
@@ -100,6 +97,7 @@ const ProductDetailPage = () => {
         );
     if (!product) return <div className="pt-60 text-center text-[10px]">PRODUCT NOT FOUND</div>;
 
+
     return (
         <>
             <div className="flex flex-col md:flex-row w-full min-h-screen">
@@ -112,10 +110,6 @@ const ProductDetailPage = () => {
                             <img
                                 src={img.url}
                                 alt={`${product.name}-${index}`}
-                                /* 🌟 translate-x-[5%]: 이미지를 오른쪽으로 5%만큼 이동시킵니다.
-                                   값이 양수(+)이면 오른쪽, 음수(-)이면 왼쪽으로 이동합니다.
-                                   원하는 위치가 나올 때까지 2%, 8% 등으로 미세하게 조정해 보세요.
-                                */
                                 className="w-full h-full object-contain scale-[1.5] translate-x-[15%] translate-y-[-10%] "
                             />
                         </div>
@@ -129,15 +123,7 @@ const ProductDetailPage = () => {
                             <h1 className="text-[16px] font-medium tracking-tight text-[#111]">
                                 {product.name}
                             </h1>
-                            <button
-                                onClick={() => setIsBookmarked(!isBookmarked)}
-                                className="pt-1 flex-shrink-0">
-                                {isBookmarked ? (
-                                    <MdBookmark className="text-xl" />
-                                ) : (
-                                    <MdBookmarkBorder className="text-xl" />
-                                )}
-                            </button>
+                            <Bookmark productId={Number(id)} />
                         </div>
 
                         <p className="text-[13px] font-normal text-[#111] mb-6">

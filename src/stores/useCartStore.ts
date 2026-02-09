@@ -3,7 +3,7 @@ import { persist } from "zustand/middleware";
 import { getCart, addToCart, updateCart, removeCart } from "../api/cart.api.ts";
 import type { CartItem } from "../types/Cart.ts";
 
-interface CartState {
+export interface CartState {
     items: CartItem[];
     loading: boolean;
     fetchCart: () => Promise<void>;

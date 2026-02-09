@@ -1,11 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet } from "react-router";
 import Header from "./header.tsx";
 import Footer from "./footer.tsx";
 import LoginDrawer from "../pages/components/LoginDrawer.tsx";
+import useAuthStore from "../stores/useAuthStore.ts";
+import useBookmarkStore from "../stores/useBookMarkStore.ts";
 
 function Layout() {
     const [isLoginOpen, setIsLoginOpen] = useState(false);
+
+    const { fetchBookmarks } = useBookmarkStore();
+    const { isLoggedIn } = useAuthStore();
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            fetchBookmarks();
+        }
+    }, [isLoggedIn, fetchBookmarks]);
 
     return (
         <div className="relative flex flex-col min-h-screen">

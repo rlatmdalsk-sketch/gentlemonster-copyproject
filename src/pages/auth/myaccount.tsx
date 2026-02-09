@@ -5,7 +5,6 @@ import {twMerge} from "tailwind-merge";
 function MyAccount() {
     const navigate = useNavigate();
 
-    // 🌟 수정 1: 스토어에서 user 객체와 logout 함수를 꺼냅니다.
     const {user} = useAuthStore();
 
 
