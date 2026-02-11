@@ -25,8 +25,8 @@ export const createInquiry = async (data: CreateInquiryRequest) => {
 
 /* 문의 상세 조회 */
 export const fetchInquiryDetail = async (id: number) => {
-    const response = await httpClient.get<InquiryDetailResponse>(`/inquiries/${id}`);
-    return response.data;
+    const response = await httpClient.get<{ message: string; data: InquiryDetailResponse }>(`/inquiries/${id}`);
+    return response.data.data;
 };
 
 /* 문의 수정 */

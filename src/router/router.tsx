@@ -30,7 +30,9 @@ import WishListPage from "../pages/auth/WishList.tsx";
 import ShoppingBagWish from "../pages/Cart/shoppingBagWish.tsx";
 import InquiryList from "../pages/inquiry/inquiryList.tsx";
 import inquiryWrite from "../pages/inquiry/inquiryWrite.tsx";
-import InquiryWirte from "../pages/inquiry/inquiryWrite.tsx"; //
+import InquiryWirte from "../pages/inquiry/inquiryWrite.tsx";
+import InquiryDetail from "../pages/inquiry/inquiryDetail.tsx";
+import InquiryEdit from "../pages/inquiry/inquiryEdit.tsx"; //
 
 export const adminOnlyLoader = () => {
     const { isLoggedIn, user } = useAuthStore.getState();
@@ -86,7 +88,9 @@ const router = createBrowserRouter([
                 path: "inquiry",
                 children: [
                     {index: true, element: <InquiryList />},
-                    {path: "write", element: <InquiryWirte />}
+                    {path: "write", element: <InquiryWirte />},
+                    {path: "/inquiry/:id", element: <InquiryDetail />},
+                    {path: "/inquiry/edit/:id" ,element: <InquiryEdit />},
                 ]
             },
 

@@ -1,15 +1,16 @@
 import { twMerge } from "tailwind-merge";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuthStore from "../../stores/useAuthStore.ts";
 
 function ProfileHeader() {
     const { logout } = useAuthStore();
     const location = useLocation();
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         if (window.confirm("로그아웃 하시겠습니까?")) {
             logout();
-            window.location.href = "/";
+            navigate(-1);
         }
     };
 

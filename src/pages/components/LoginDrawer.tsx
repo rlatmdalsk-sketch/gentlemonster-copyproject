@@ -11,7 +11,6 @@ interface Props {
 }
 
 const LoginDrawer = ({ isOpen, onClose }: Props) => {
-    const navigate = useNavigate();
     const { login } = useAuthStore();
 
     const [email, setEmail] = useState("");
@@ -33,7 +32,7 @@ const LoginDrawer = ({ isOpen, onClose }: Props) => {
                 login(user, token);
 
                 alert(`${user.name}님, 환영합니다`);
-                window.location.href = "/";
+                window.location.href = "";
             } else {
                 console.error("구조 불일치:", result);
                 alert("서버 응답 형식이 올바르지 않습니다.");

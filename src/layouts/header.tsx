@@ -174,7 +174,7 @@ export default function Header({ onLoginClick }: { onLoginClick: () => void }) {
                                             e.preventDefault();
                                             onLoginClick();
                                         }}
-                                        className="p-1 hover:opacity-50 transition-opacity">
+                                        className="p-1 hover:opacity-50 transition-opacity cursor-pointer">
                                         <LuUser size={25} />
                                     </button>
                                 )}

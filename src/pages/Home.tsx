@@ -139,7 +139,7 @@ function Home() {
                     navigation={true}
                     threshold={5}
 
-             다
+
                     touchRatio={1.2}
 
 
