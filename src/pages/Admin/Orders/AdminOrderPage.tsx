@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { MdRefresh, MdChevronLeft, MdChevronRight } from "react-icons/md";
-import type { OrderStatus } from "../../types/order.ts";
-import { fetchAdminOrderList, updateOrderStatus } from "../../api/order.api.ts";
+import type { OrderStatus } from "../../../types/order.ts";
+import { fetchAdminOrderList, updateOrderStatus } from "../../../api/order.api.ts";
 
 function AdminOrderPage() {
     const [orders, setOrders] = useState<any[]>([]); // items가 없으므로 임시로 any 처리

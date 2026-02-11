@@ -7,7 +7,6 @@ import {fetchAllUsers} from "../../api/admin.api.ts";
 export default function Dashboard() {
     const navigate = useNavigate();
 
-    // Zustand 스토어에서 로그인한 관리자 정보 가져오기
     const { user: adminInfo } = useAuthStore();
 
     const [userList, setUserList] = useState<UserData[]>([]);
@@ -44,13 +43,13 @@ export default function Dashboard() {
     }, []);
 
     if (loading) return (
-        <div className="min-h-screen bg-[#F2F2F2] flex items-center justify-center tracking-[0.2em] text-[10px] uppercase">
+        <div className="min-h-screen  flex items-center justify-center tracking-[0.2em] text-[10px] uppercase">
             Loading...
         </div>
     );
 
     return (
-        <div className="min-h-screen bg-[#F2F2F2] flex font-sans text-black">
+        <div className="min-h-screen  flex font-sans text-black">
 
             <main className="flex-1 p-12 space-y-12">
                 {/* 헤더: 로그인 유저(adminInfo) 연동 */}

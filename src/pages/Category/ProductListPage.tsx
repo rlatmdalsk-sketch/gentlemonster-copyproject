@@ -6,7 +6,7 @@ import { getCategoryByPath } from "../../api/category.api.ts";
 import { fetchProducts } from "../../api/product.api.ts";
 import type { Product } from "../../types/product.ts";
 import ProductCard from "./ProductCard.tsx";
-import ProductListHero from "../ProdcutListHero.tsx";
+import ProductListHero from "./ProdcutListHero.tsx";
 import ProductListHeader from "../components/ProductListHeader.tsx";
 
 const ProductListPage = () => {
@@ -88,8 +88,7 @@ const ProductListPage = () => {
 
             {/* 상품 리스트 */}
             <div className={twMerge(
-                "px-10 pb-20",
-                "image" in currentCategory ? "pt-0" : "pt-10"
+                "px-10 pb-20"
             )}>
                 {loading ? (
                     <div className="text-center py-20 text-xs uppercase tracking-widest text-gray-400 animate-pulse">
@@ -105,7 +104,7 @@ const ProductListPage = () => {
                         </p>
                     </div>
                 ) : products.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-3" >
                         {products.map((product) => (
                             <ProductCard key={product.id} product={product} />
                         ))}

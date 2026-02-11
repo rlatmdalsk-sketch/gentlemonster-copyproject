@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { createInquiry } from "../../api/inquiry.api";
 import type { InquiryType, CreateInquiryRequest } from "../../types/inquiry";
-import { twMerge } from "tailwind-merge";
 
 const InquiryWrite = () => {
     const navigate = useNavigate();

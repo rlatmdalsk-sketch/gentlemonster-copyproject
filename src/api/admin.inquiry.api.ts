@@ -4,7 +4,6 @@ import type {
     AdminInquiryItem,
     AdminInquiryListResponse,
 } from "../types/admin.inquiry.ts";
- // 타입 경로에 맞춰 수정하세요
 
 /* 전체 문의 내역 조회 */
 export const fetchAdminInquiryList = async (page = 1, limit = 10) => {
