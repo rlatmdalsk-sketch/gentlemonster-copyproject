@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link,  useParams } from "react-router-dom";
 import { fetchProductDetail, fetchProducts } from "../../api/product.api.ts";
 import type { Product } from "../../types/product";
 import { Swiper, SwiperSlide } from "swiper/react";

@@ -12,7 +12,7 @@ interface BookmarkState {
 const useBookmarkStore = create<BookmarkState>((set, get) => ({
     bookmarkedNames: new Set(),
     // 🌟 추가: 이름별로 서버에 등록된 실제 ID들을 저장 (해제할 때 사용)
-    idMapByName: new Map<string, number[]>(),
+    idMapByName: {} as Record<string, number>,
     loading: false,
 
     fetchBookmarks: async () => {
