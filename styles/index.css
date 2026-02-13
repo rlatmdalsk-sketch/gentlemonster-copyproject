@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+/* 1. 웹폰트 불러오기 */
+@font-face {
+    font-family: 'GentleMonsterSans';
+    src: url('https://www.gentlemonster.com/fonts/GentleMonster-Regular.woff2') format('woff2');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'GentleMonsterSans';
+    src: url('https://www.gentlemonster.com/fonts/GentleMonster-Medium.woff2') format('woff2');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'GentleMonsterSans';
+    src: url('https://www.gentlemonster.com/fonts/GentleMonster-Bold.woff2') format('woff2');
+    font-weight: 700;
+}
+
+
+
+/* 2. Tailwind v4 테마 설정 */
+@theme {
+    --font-gentle: "GentleMonsterSans", "Noto Sans KR", sans-serif;
+    --letter-spacing-gentle: -0.02em;
+}
+
+/* 3. 기본 스타일 */
+body {
+    margin: 0;
+    background-color: #f2f3f5;
+    min-height: 100vh;
+    font-family: var(--font-gentle); /* 설정한 폰트 적용 */
+    -webkit-font-smoothing: antialiased;
+}
+
