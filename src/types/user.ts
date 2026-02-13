@@ -28,7 +28,7 @@ export interface User {
     id: number;
     email: string;
     name: string;
-    phone: optional;
+    phone: string;
     birthdate: string;
     gender?: string;
     role: string;
