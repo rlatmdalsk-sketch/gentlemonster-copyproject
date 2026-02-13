@@ -32,6 +32,7 @@ const AdminProductList = () => {
                 sort: "latest", // 최신순 정렬 기본
             });
 
+
             setProducts(response.data);
             setTotalPages(response.pagination.totalPages);
             setTotalProducts(response.pagination.total);
@@ -123,7 +124,6 @@ const AdminProductList = () => {
                             <tr className="border-b border-gray-100 bg-gray-50/50">
                                 <th className="p-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest w-24">이미지</th>
                                 <th className="p-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">상품 정보</th>
-                                <th className="p-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">카테고리</th>
                                 <th className="p-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">가격</th>
                                 <th className="p-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">등록일</th>
                                 <th className="p-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest text-right">관리</th>
@@ -170,13 +170,6 @@ const AdminProductList = () => {
                                             </div>
                                         </td>
 
-                                        {/* 카테고리 */}
-                                        <td className="p-4 text-xs text-gray-600 font-medium">
-                                            {product.category?.name || <span className="text-gray-300">-</span>}
-                                            <div className="text-[9px] text-gray-400 mt-1 font-mono">
-                                                /{product.category?.path}
-                                            </div>
-                                        </td>
 
                                         {/* 가격 */}
                                         <td className="p-4 text-xs text-[#111] font-mono tracking-wide font-bold">
