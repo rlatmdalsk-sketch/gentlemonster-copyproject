@@ -5,7 +5,7 @@ https://vercel.com/rlatmdalsks-projects/gentlemonster-copyproject
 
 어드민기능은 ADMIN 탭에서 확인가능합니다(권한필요)
 
-
+자세한 내용들은 아래 파일에서 확인가능합니다.
 ---------------------------------------------------------------------------
 
 PPT파일:[Project GentleMonster.pptx](https://github.com/user-attachments/files/25510556/Project.GentleMonster.pptx)
